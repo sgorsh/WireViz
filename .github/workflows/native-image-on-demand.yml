@@ -45,7 +45,7 @@ jobs:
         run: |
           python3 -m nuitka \
             --include-module=wireviz \
-            --onefile src/wireviz \
+            --onefile wireviz_kroki.py \
             --output-filename=wireviz-${PLATFORM}.bin
         env:
           PLATFORM: ${{ matrix.platform }}
