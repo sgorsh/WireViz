@@ -17,8 +17,6 @@ jobs:
         include:
           - os: 'ubuntu-latest'
             platform: 'linux-amd64'
-          - os: 'ARM64' # self-hosted
-            platform: 'linux-arm64'
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
@@ -79,17 +77,10 @@ jobs:
           key: "native-image-linux-amd64-${{ github.run_id }}"
           fail-on-cache-miss: true
           enableCrossOsArchive: true
-      - name: Restore Native-image-linux-arm64 cache
-        uses: actions/cache/restore@v3
-        with:
-          path: "wireviz-linux-arm64.bin"
-          key: "native-image-linux-arm64-${{ github.run_id }}"
-          fail-on-cache-miss: true
-          enableCrossOsArchive: true
       - name: Create release
         run: |
           gh release view "v$RELEASE_VERSION" || gh release create "v$RELEASE_VERSION"
-          gh release upload "v$RELEASE_VERSION" ./wireviz-linux-amd64.bin ./wireviz-linux-arm64.bin --clobber
+          gh release upload "v$RELEASE_VERSION" ./wireviz-linux-amd64.bin --clobber
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           RELEASE_VERSION: ${{ env.release_version }}
